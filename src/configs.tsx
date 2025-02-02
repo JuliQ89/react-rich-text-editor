@@ -211,7 +211,7 @@ export const useToolbar = () => {
           isOpened={linkDropdownIsOpened}
           setIsOpened={setLinkDropdownIsOpened}
           options={[
-            <div className="editor-dropdown-link-dialog">
+            <div className="editor-dropdown-link-dialog" key={1}>
               <input
                 type="text"
                 name="link-href"
