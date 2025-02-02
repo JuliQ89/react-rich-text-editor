@@ -104,7 +104,7 @@ const useToolbar = () => {
             subscript: (react_1.default.createElement(main_1.Button, { key: "subscript", content: react_1.default.createElement(react_2.RiSubscript, null), title: "Subscript", onClick: () => (0, main_1.execCommand)("subscript", false), className: btnIsActive(commandIsActive.subscript) })),
             removeFormat: (react_1.default.createElement(main_1.Button, { key: "removeFormat", content: react_1.default.createElement(react_2.RiFormatClear, null), title: "Remove Format", onClick: () => (0, main_1.execCommand)("removeFormat", false) })),
             createLink: (react_1.default.createElement(main_1.Dropdown, { key: "createLink", isOpened: linkDropdownIsOpened, setIsOpened: setLinkDropdownIsOpened, options: [
-                    react_1.default.createElement("div", { className: "editor-dropdown-link-dialog" },
+                    react_1.default.createElement("div", { className: "editor-dropdown-link-dialog", key: 1 },
                         react_1.default.createElement("input", { type: "text", name: "link-href", placeholder: "Link URL", value: linkValue, onChange: (e) => setLinkValue(e.target.value) }),
                         react_1.default.createElement("div", { className: "editor-dropdown-link__buttons" },
                             react_1.default.createElement("button", { style: { color: "#008a00" }, onClick: () => (0, main_1.execLink)(linkValue) },
