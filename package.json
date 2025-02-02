@@ -32,7 +32,7 @@
     "JuliQ89",
     "Julian Singheiser"
   ],
-  "version": "0.1.1",
+  "version": "2.1.12",
   "dependencies": {
     "@remixicon/react": "^4.6.0",
     "@types/react": "^19.0.8",
