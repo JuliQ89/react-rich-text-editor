@@ -1,0 +1,77 @@
+{
+  "name": "react-rich-text-editor-js",
+  "description": "",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "author": {
+    "email": "julian.singheiser.official@gmail.com",
+    "name": "Julian Singheiser",
+    "url": "https://jssmartcode.de/"
+  },
+  "repository": {
+    "url": "https://github.com/JuliQ89/react-rich-text-editor"
+  },
+  "license": "MIT",
+  "keywords": [
+    "Rich",
+    "Text",
+    "Editor",
+    "React",
+    "js",
+    "Rich Text Editor",
+    "React Rich Text Editor",
+    "React Rich Editor",
+    "JuliQ89",
+    "Julian Singheiser"
+  ],
+  "version": "0.1.1",
+  "dependencies": {
+    "@remixicon/react": "^4.6.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "cra-template-typescript": "1.2.0",
+    "html-react-parser": "^5.2.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^5.7.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "tsc",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/react-html-parser": "^2.0.6"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
+}
