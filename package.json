@@ -3,7 +3,9 @@
   "description": "",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "dist/assets",
+    "dist/assets/*.css"
   ],
   "exports": {
     ".": {
