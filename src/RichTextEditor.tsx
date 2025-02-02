@@ -27,7 +27,7 @@ const RichTextEditor = ({
   toolbarConfigs = toolbarDefaultConfigs,
 }: RichTextEditorI) => {
   const [value] = useState(editorContent);
-  const toolbar = useToolbar();
+  const { toolbar, checkCommandsState } = useToolbar();
 
   return (
     <div className="rich-text-container" style={{ height }}>
@@ -42,9 +42,12 @@ const RichTextEditor = ({
           className="rich-text-field"
           contentEditable={true}
           spellCheck={spellCheck}
+          onMouseUp={checkCommandsState}
+          onMouseDown={checkCommandsState}
           onInput={(e) => {
             const target = e.target as HTMLDivElement;
             setEditorContent(target.innerHTML);
+            checkCommandsState();
           }}
           suppressContentEditableWarning={true}
         >

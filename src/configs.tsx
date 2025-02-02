@@ -90,8 +90,8 @@ export const toolbarDefaultConfigs: toolbarConfigsType[] = [
 ];
 
 export const useToolbar = () => {
-  const [frontColorValue, setFrontColorValue] = useState<string>("");
-  const [backColorValue, setBackColorValue] = useState<string>("");
+  const [frontColorValue, setFrontColorValue] = useState<string>("#000000");
+  const [backColorValue, setBackColorValue] = useState<string>("#000000");
   const [linkDropdownIsOpened, setLinkDropdownIsOpened] =
     useState<boolean>(false);
   const [fontSizeDropdownIsOpened, setFontSizeDropdownIsOpened] =
@@ -100,240 +100,322 @@ export const useToolbar = () => {
     useState<boolean>(false);
   const [linkValue, setLinkValue] = useState<string>("");
 
+  const [commandIsActive, setCommandIsActive] = useState<{
+    bold: boolean;
+    italic: boolean;
+    underline: boolean;
+    strikethrough: boolean;
+    superscript: boolean;
+    subscript: boolean;
+    insertUnorderedList: boolean;
+    insertOrderedList: boolean;
+    justifyLeft: boolean;
+    justifyCenter: boolean;
+    justifyRight: boolean;
+  }>({
+    bold: false,
+    italic: false,
+    underline: false,
+    strikethrough: false,
+    superscript: false,
+    subscript: false,
+    insertUnorderedList: false,
+    insertOrderedList: false,
+    justifyLeft: false,
+    justifyCenter: false,
+    justifyRight: false,
+  });
+
+  const checkCommandsState = () => {
+    setCommandIsActive((prevState) => {
+      const newState = { ...prevState };
+      Object.keys(prevState).forEach((command) => {
+        newState[command as keyof typeof prevState] =
+          queryCommandState(command);
+      });
+      return newState;
+    });
+  };
+
+  const btnIsActive = (key: boolean) => {
+    return key ? "btn-active" : "";
+  };
+
   return {
-    bold: (
-      <Button
-        content={<RiBold />}
-        title="Bold"
-        onClick={() => execCommand("bold", false)}
-        className={queryCommandState("bold") ? "btn-active" : ""}
-      />
-    ),
-    italic: (
-      <Button
-        content={<RiItalic />}
-        title="Italic"
-        onClick={() => execCommand("italic", false)}
-      />
-    ),
-    underline: (
-      <Button
-        content={<RiUnderline />}
-        title="Underline"
-        onClick={() => execCommand("underline", false)}
-      />
-    ),
-    strikethrough: (
-      <Button
-        content={<RiStrikethrough />}
-        title="Strikethrough"
-        onClick={() => execCommand("strikethrough", false)}
-      />
-    ),
-    superscript: (
-      <Button
-        content={<RiSuperscript />}
-        title="Superscript"
-        onClick={() => execCommand("superscript", false)}
-      />
-    ),
-    subscript: (
-      <Button
-        content={<RiSubscript />}
-        title="Subscript"
-        onClick={() => execCommand("subscript", false)}
-      />
-    ),
-    removeFormat: (
-      <Button
-        content={<RiFormatClear />}
-        title="Remove Format"
-        onClick={() => execCommand("removeFormat", false)}
-      />
-    ),
-    createLink: (
-      <Dropdown
-        isOpened={linkDropdownIsOpened}
-        setIsOpened={setLinkDropdownIsOpened}
-        options={[
-          <div className="editor-dropdown-link-dialog">
-            <input
-              type="text"
-              name="link-href"
-              placeholder="Link URL"
-              value={linkValue}
-              onChange={(e) => setLinkValue(e.target.value)}
-            />
-            <div className="editor-dropdown-link__buttons">
-              <button
-                style={{ color: "#008a00" }}
-                onClick={() => execLink(linkValue)}
-              >
-                <RiCheckLine />
-              </button>
-              <button
-                style={{ color: "#db3700" }}
-                onClick={() => setLinkDropdownIsOpened(!linkDropdownIsOpened)}
-              >
-                <RiCloseLine />
-              </button>
-            </div>
-          </div>,
-        ]}
-        type="editor-dropdown-dialog"
-        display={<RiLink />}
-      />
-    ),
-    fontSize: (
-      <Dropdown
-        isOpened={fontSizeDropdownIsOpened}
-        setIsOpened={setFontSizeDropdownIsOpened}
-        options={[
-          <Button
-            content={<RiNumber1 />}
-            onClick={() => execCommand("fontSize", false, "1")}
-          />,
-          <Button
-            content={<RiNumber2 />}
-            onClick={() => execCommand("fontSize", false, "2")}
-          />,
-          <Button
-            content={<RiNumber3 />}
-            onClick={() => execCommand("fontSize", false, "3")}
-          />,
-          <Button
-            content={<RiNumber4 />}
-            onClick={() => execCommand("fontSize", false, "4")}
-          />,
-          <Button
-            content={<RiNumber5 />}
-            onClick={() => execCommand("fontSize", false, "5")}
-          />,
-          <Button
-            content={<RiNumber6 />}
-            onClick={() => execCommand("fontSize", false, "6")}
-          />,
-          <Button
-            content={<RiNumber7 />}
-            onClick={() => execCommand("fontSize", false, "7")}
-          />,
-        ]}
-        type="editor-dropdown-options"
-        display={<RiFontSize />}
-      />
-    ),
-    fontName: (
-      <Dropdown
-        isOpened={fontFamilyDropdownIsOpened}
-        setIsOpened={setFontFamilyDropdownIsOpened}
-        direction="column"
-        options={fontList.map((font: string, i: number) => {
-          return (
+    toolbar: {
+      bold: (
+        <Button
+          key={"bold"}
+          content={<RiBold />}
+          title="Bold"
+          onClick={() => execCommand("bold", false)}
+          className={btnIsActive(commandIsActive.bold)}
+        />
+      ),
+      italic: (
+        <Button
+          key={"italic"}
+          content={<RiItalic />}
+          title="Italic"
+          onClick={() => execCommand("italic", false)}
+          className={btnIsActive(commandIsActive.italic)}
+        />
+      ),
+      underline: (
+        <Button
+          key={"underline"}
+          content={<RiUnderline />}
+          title="Underline"
+          onClick={() => execCommand("underline", false)}
+          className={btnIsActive(commandIsActive.underline)}
+        />
+      ),
+      strikethrough: (
+        <Button
+          key={"strikethrough"}
+          content={<RiStrikethrough />}
+          title="Strikethrough"
+          onClick={() => execCommand("strikethrough", false)}
+          className={btnIsActive(commandIsActive.strikethrough)}
+        />
+      ),
+      superscript: (
+        <Button
+          key={"superscript"}
+          content={<RiSuperscript />}
+          title="Superscript"
+          onClick={() => execCommand("superscript", false)}
+          className={btnIsActive(commandIsActive.superscript)}
+        />
+      ),
+      subscript: (
+        <Button
+          key={"subscript"}
+          content={<RiSubscript />}
+          title="Subscript"
+          onClick={() => execCommand("subscript", false)}
+          className={btnIsActive(commandIsActive.subscript)}
+        />
+      ),
+      removeFormat: (
+        <Button
+          key={"removeFormat"}
+          content={<RiFormatClear />}
+          title="Remove Format"
+          onClick={() => execCommand("removeFormat", false)}
+        />
+      ),
+      createLink: (
+        <Dropdown
+          key={"createLink"}
+          isOpened={linkDropdownIsOpened}
+          setIsOpened={setLinkDropdownIsOpened}
+          options={[
+            <div className="editor-dropdown-link-dialog">
+              <input
+                type="text"
+                name="link-href"
+                placeholder="Link URL"
+                value={linkValue}
+                onChange={(e) => setLinkValue(e.target.value)}
+              />
+              <div className="editor-dropdown-link__buttons">
+                <button
+                  style={{ color: "#008a00" }}
+                  onClick={() => execLink(linkValue)}
+                >
+                  <RiCheckLine />
+                </button>
+                <button
+                  style={{ color: "#db3700" }}
+                  onClick={() => setLinkDropdownIsOpened(!linkDropdownIsOpened)}
+                >
+                  <RiCloseLine />
+                </button>
+              </div>
+            </div>,
+          ]}
+          type="editor-dropdown-dialog"
+          display={<RiLink />}
+        />
+      ),
+      fontSize: (
+        <Dropdown
+          key={"fontsize"}
+          isOpened={fontSizeDropdownIsOpened}
+          setIsOpened={setFontSizeDropdownIsOpened}
+          options={[
             <Button
-              key={i}
-              className={"dropdown-fontfamily-button"}
-              content={font}
-              style={{ fontFamily: font, justifyContent: "stretch" }}
-              onClick={() => execCommand("fontName", false, font)}
-            />
-          );
-        })}
-        type="editor-dropdown-options"
-        display={<RiFontFamily />}
-      />
-    ),
-    foreColor: (
-      <Button
-        content={
-          <>
-            <RiFontColor />
-            <ColorInput
-              colorValue={frontColorValue}
-              setColorValue={setFrontColorValue}
-            />
-          </>
-        }
-        title="color"
-        onClick={() => execCommand("foreColor", false, frontColorValue)}
-      />
-    ),
-    backColor: (
-      <Button
-        content={
-          <>
-            <RiPaintBrushLine />
-            <ColorInput
-              colorValue={backColorValue}
-              setColorValue={setBackColorValue}
-            />
-          </>
-        }
-        title="background color"
-        onClick={() => execCommand("backColor", false, backColorValue)}
-      />
-    ),
-    insertUnorderedList: (
-      <Button
-        content={<RiListUnordered />}
-        title="Unordered List"
-        onClick={() => execCommand("insertUnorderedList", false)}
-      />
-    ),
-    insertOrderedList: (
-      <Button
-        content={<RiListOrdered2 />}
-        title="Ordered List"
-        onClick={() => execCommand("insertOrderedList", false)}
-      />
-    ),
-    justifyLeft: (
-      <Button
-        content={<RiAlignLeft />}
-        title="Align left"
-        onClick={() => execCommand("justifyLeft", false)}
-      />
-    ),
-    justifyCenter: (
-      <Button
-        content={<RiAlignCenter />}
-        title="Align center"
-        onClick={() => execCommand("justifyCenter", false)}
-      />
-    ),
-    justifyRight: (
-      <Button
-        content={<RiAlignRight />}
-        title="Align right"
-        onClick={() => execCommand("justifyRight", false)}
-      />
-    ),
-    outdent: (
-      <Button
-        content={<RiIndentDecrease />}
-        title="Outdent"
-        onClick={() => execCommand("outdent", false)}
-      />
-    ),
-    indent: (
-      <Button
-        content={<RiIndentIncrease />}
-        title="Indent"
-        onClick={() => execCommand("indent", false)}
-      />
-    ),
-    undo: (
-      <Button
-        content={<RiArrowGoBackLine />}
-        title="Undo"
-        onClick={() => execCommand("undo", false)}
-      />
-    ),
-    redo: (
-      <Button
-        content={<RiArrowGoForwardLine />}
-        title="Redo"
-        onClick={() => execCommand("redo", false)}
-      />
-    ),
+              key={1}
+              content={<RiNumber1 />}
+              onClick={() => execCommand("fontSize", false, "1")}
+            />,
+            <Button
+              key={2}
+              content={<RiNumber2 />}
+              onClick={() => execCommand("fontSize", false, "2")}
+            />,
+            <Button
+              key={3}
+              content={<RiNumber3 />}
+              onClick={() => execCommand("fontSize", false, "3")}
+            />,
+            <Button
+              key={4}
+              content={<RiNumber4 />}
+              onClick={() => execCommand("fontSize", false, "4")}
+            />,
+            <Button
+              key={5}
+              content={<RiNumber5 />}
+              onClick={() => execCommand("fontSize", false, "5")}
+            />,
+            <Button
+              key={6}
+              content={<RiNumber6 />}
+              onClick={() => execCommand("fontSize", false, "6")}
+            />,
+            <Button
+              key={7}
+              content={<RiNumber7 />}
+              onClick={() => execCommand("fontSize", false, "7")}
+            />,
+          ]}
+          type="editor-dropdown-options"
+          display={<RiFontSize />}
+        />
+      ),
+      fontName: (
+        <Dropdown
+          key={"fontName"}
+          isOpened={fontFamilyDropdownIsOpened}
+          setIsOpened={setFontFamilyDropdownIsOpened}
+          direction="column"
+          options={fontList.map((font: string, i: number) => {
+            return (
+              <Button
+                key={i}
+                className={"dropdown-fontfamily-button"}
+                content={font}
+                style={{ fontFamily: font, justifyContent: "stretch" }}
+                onClick={() => execCommand("fontName", false, font)}
+              />
+            );
+          })}
+          type="editor-dropdown-options"
+          display={<RiFontFamily />}
+        />
+      ),
+      foreColor: (
+        <Button
+          key={"foreColor"}
+          content={
+            <>
+              <RiFontColor />
+              <ColorInput
+                colorValue={frontColorValue}
+                setColorValue={setFrontColorValue}
+              />
+            </>
+          }
+          title="color"
+          onClick={() => execCommand("foreColor", false, frontColorValue)}
+        />
+      ),
+      backColor: (
+        <Button
+          key={"backColor"}
+          content={
+            <>
+              <RiPaintBrushLine />
+              <ColorInput
+                colorValue={backColorValue}
+                setColorValue={setBackColorValue}
+              />
+            </>
+          }
+          title="background color"
+          onClick={() => execCommand("backColor", false, backColorValue)}
+        />
+      ),
+      insertUnorderedList: (
+        <Button
+          key={"insertUnorderedList"}
+          content={<RiListUnordered />}
+          title="Unordered List"
+          onClick={() => execCommand("insertUnorderedList", false)}
+          className={btnIsActive(commandIsActive.insertUnorderedList)}
+        />
+      ),
+      insertOrderedList: (
+        <Button
+          key={"insertOrderedList"}
+          content={<RiListOrdered2 />}
+          title="Ordered List"
+          onClick={() => execCommand("insertOrderedList", false)}
+          className={btnIsActive(commandIsActive.insertOrderedList)}
+        />
+      ),
+      justifyLeft: (
+        <Button
+          key={"justifyLeft"}
+          content={<RiAlignLeft />}
+          title="Align left"
+          onClick={() => execCommand("justifyLeft", false)}
+          className={btnIsActive(commandIsActive.justifyLeft)}
+        />
+      ),
+      justifyCenter: (
+        <Button
+          key={"justifyCenter"}
+          content={<RiAlignCenter />}
+          title="Align center"
+          onClick={() => execCommand("justifyCenter", false)}
+          className={btnIsActive(commandIsActive.justifyCenter)}
+        />
+      ),
+      justifyRight: (
+        <Button
+          key={"justifyRight"}
+          content={<RiAlignRight />}
+          title="Align right"
+          onClick={() => execCommand("justifyRight", false)}
+          className={btnIsActive(commandIsActive.justifyRight)}
+        />
+      ),
+      outdent: (
+        <Button
+          key={"outdent"}
+          content={<RiIndentDecrease />}
+          title="Outdent"
+          onClick={() => execCommand("outdent", false)}
+        />
+      ),
+      indent: (
+        <Button
+          key={"indent"}
+          content={<RiIndentIncrease />}
+          title="Indent"
+          onClick={() => execCommand("indent", false)}
+        />
+      ),
+      undo: (
+        <Button
+          key={"undo"}
+          content={<RiArrowGoBackLine />}
+          title="Undo"
+          onClick={() => execCommand("undo", false)}
+        />
+      ),
+      redo: (
+        <Button
+          key={"redo"}
+          content={<RiArrowGoForwardLine />}
+          title="Redo"
+          onClick={() => execCommand("redo", false)}
+        />
+      ),
+    },
+    checkCommandsState: checkCommandsState,
   };
 };
