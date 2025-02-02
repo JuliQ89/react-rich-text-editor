@@ -5,7 +5,7 @@
   "files": [
     "dist",
     "dist/assets",
-    "dist/assets/*.css"
+    "dist/assets/css/*.css"
   ],
   "exports": {
     ".": {
