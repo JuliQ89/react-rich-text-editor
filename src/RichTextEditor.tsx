@@ -1,6 +1,5 @@
 import "./assets/css/editor.css";
-import { useState } from "react";
-import parse from "html-react-parser";
+import { useEffect, useRef } from "react";
 import {
   toolbarConfigsType,
   toolbarDefaultConfigs,
@@ -26,8 +25,14 @@ const RichTextEditor = ({
   spellCheck = true,
   toolbarConfigs = toolbarDefaultConfigs,
 }: RichTextEditorI) => {
-  const [value] = useState(editorContent);
   const { toolbar, checkCommandsState } = useToolbar();
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== editorContent) {
+      editorRef.current.innerHTML = editorContent;
+    }
+  }, [editorContent]);
 
   return (
     <div className="rich-text-container" style={{ height }}>
@@ -40,6 +45,7 @@ const RichTextEditor = ({
         <div
           id="rich-text-editor"
           className="rich-text-field"
+          ref={editorRef}
           contentEditable={true}
           spellCheck={spellCheck}
           onMouseUp={checkCommandsState}
@@ -50,9 +56,7 @@ const RichTextEditor = ({
             checkCommandsState();
           }}
           suppressContentEditableWarning={true}
-        >
-          {parse(value)}
-        </div>
+        />
         <input
           type="hidden"
           name="content"
